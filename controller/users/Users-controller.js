@@ -7,6 +7,8 @@ const User = require("../../models/user-model/User-model");
 const validateMongodbId = require("../../utils/validateMongodbId");
 const cloudinaryUploadImage = require("../../utils/cloudinary");
 const blockUser = require("../../utils/blockUser");
+const dotenv = require("dotenv");
+dotenv.config();
 
 sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
 
@@ -241,7 +243,7 @@ const generateVerificationTokenCtrl = expressAsyncHandler(async (req, res) => {
     await user.save();
     console.log(verificationToken);
 
-    const resetURL = `If you were requested to verify your account, verify now within 10 minutes, otherwise ignore this message <a href="http://localhost:7778/verify-account/${verificationToken}">Click to verify your account</a>`;
+    const resetURL = `If you were requested to verify your account, verify now within 10 minutes, otherwise ignore this message <a href="http://localhost:${PORT}/verify-account/${verificationToken}">Click to verify your account</a>`;
     const msg = {
       to: user.email,
       from: "snir1290@outlook.com",
@@ -283,7 +285,7 @@ const forgetPasswordToken = expressAsyncHandler(async (req, res) => {
     console.log(token);
     await user.save();
 
-    const resetURL = `If you were requested to reset your password, reset now within 10 minutes, otherwise ignore this message <a href="http://localhost:7778/reset-password/${token}">Click to Reset</a>`;
+    const resetURL = `If you were requested to reset your password, reset now within 10 minutes, otherwise ignore this message <a href="http://localhost:${PORT}/reset-password/${token}">Click to Reset</a>`;
     const msg = {
       to: email,
       from: "snir1290@outlook.com",
